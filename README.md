@@ -209,25 +209,6 @@ The application is stateless, meaning all state is persisted in the database, wh
   | Last-write-wins                 | Deterministic conflict resolution |
   | DB PK enforcement               | Strong concurrency guarantee      |
 
-## 2. Deduplication & Update Logic
-
-### Problem Statement
-
-The system may receive:
-
-* Duplicate events with the same `eventId`
-* Events arriving out of order
-* Multiple versions of the same event with different payloads
-* Concurrent ingestion attempts for the same `eventId`
-
-The goal is to ensure:
-
-* Only one record exists per `eventId`
-* The stored record always represents the most authoritative version
-* Processing is deterministic and repeatable
-
----
-
 ### Event Identity
 
 Each event is uniquely identified by:
