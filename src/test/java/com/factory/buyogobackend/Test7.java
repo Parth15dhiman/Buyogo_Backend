@@ -1,6 +1,7 @@
 package com.factory.buyogobackend;
 
 import com.factory.buyogobackend.dto.EventRequestDTO;
+import com.factory.buyogobackend.repository.EventRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,14 @@ public class Test7 {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @BeforeEach
+    void clearDb() {
+        eventRepository.deleteAll();
+    }
 
     @Test
     void startInclusive_endExclusive() throws Exception {

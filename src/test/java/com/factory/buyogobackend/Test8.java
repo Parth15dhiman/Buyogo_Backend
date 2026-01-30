@@ -1,6 +1,7 @@
 package com.factory.buyogobackend;
 
 import com.factory.buyogobackend.dto.EventRequestDTO;
+import com.factory.buyogobackend.repository.EventRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 //  TEST 8: Thread-safety (concurrent ingestion)
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class Test8 {
@@ -33,6 +35,14 @@ public class Test8 {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @BeforeEach
+    void clearDb() {
+        eventRepository.deleteAll();
+    }
 
     @Test
     void concurrentIngestion_isThreadSafe() throws Exception {

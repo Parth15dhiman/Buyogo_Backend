@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository ;
 
+    @Transactional
     public BatchResponse processBatch(List<EventRequestDTO> events){
 
         Map<String, Event> validEventsMap = new HashMap<>() ;
