@@ -558,7 +558,6 @@ The system is designed to process a batch of **1000 events within 1 second** on 
   * Use JSON payloads as per `EventRequestDTO` for POST requests
   * Query parameters for GET requests follow LocalDateTime
 
-
 ## 8. What I Would Improve With More Time
 While the current implementation meets functional and performance requirements, given additional time, several improvements could make the system more scalable, maintainable, and resilient.
 
