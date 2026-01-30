@@ -63,7 +63,9 @@ public class EventService {
                 if( samePayLoad(event, dbEvent) ) {
                     deduped++ ;
                     continue;
-                }
+                }else if(event.getReceivedTime().isBefore( dbEventMap.get(id).getReceivedTime() ) )
+                    continue;
+
                 updated++ ;
             }
 
