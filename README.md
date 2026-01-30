@@ -4,7 +4,6 @@ This service ingests high-volume machine events in batches, performs deduplicati
 and exposes analytical APIs for querying event statistics and defect trends.  
 The system is designed to be thread-safe, performant, and deterministic under concurrent ingestion.
 
-
 ## 1. Architecture
 The system follows a layered monolithic architecture using Java 17 and the Spring Boot framework.
 It follows a classic Layered Architecture to ensure a clean separation of concerns and maintainability.

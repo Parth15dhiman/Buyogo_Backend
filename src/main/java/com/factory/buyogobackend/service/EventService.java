@@ -48,8 +48,6 @@ public class EventService {
 
                 validEventsMap.put(id, event) ;
             }
-
-
         }
 
         List<Event> eventsInDB = eventRepository.findAllById(validEventsMap.keySet());
