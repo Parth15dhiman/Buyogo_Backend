@@ -1,14 +1,13 @@
 package com.factory.buyogobackend.service;
 
-import com.factory.buyogobackend.dto.EventRequestDTO;
-import com.factory.buyogobackend.dto.BatchResponse;
-import com.factory.buyogobackend.dto.QueryStatsResponse;
-import com.factory.buyogobackend.dto.Rejection;
+import com.factory.buyogobackend.dto.*;
 import com.factory.buyogobackend.model.Event;
 import com.factory.buyogobackend.repository.EventRepository;
 import com.factory.buyogobackend.repository.projection.StatsProjection;
+import com.factory.buyogobackend.repository.projection.TopDefectLineProjection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -157,4 +156,25 @@ public class EventService {
             return null ;
         }
     }
+
+    public List<TopDefectLineResponse> getTopDefectLines(String factoryId,LocalDateTime from, LocalDateTime to, int limit){
+
+        List<TopDefectLineProjection> topDefectLines = eventRepository.findTopDefectLines(factoryId, from, to, PageRequest.of(0, limit));
+        List<TopDefectLineResponse> response = new ArrayList<>() ;
+
+        for(TopDefectLineProjection proj : topDefectLines){
+
+            long totalDefects = proj.getTotalDefects();
+            long eventCount = proj.getEventCount();
+            double defectsPercent = (eventCount == 0) ? 0.0 : round((totalDefects * 100.0) / eventCount ) ;
+            response.add( new TopDefectLineResponse(
+                    proj.getLineId(), proj.getTotalDefects(), proj.getEventCount(), defectsPercent) ) ;
+        }
+
+        return response ;
+    }
+    private double round(double v) {
+        return Math.round(v * 100.0) / 100.0;
+    }
+
 }

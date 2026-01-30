@@ -3,6 +3,7 @@ package com.factory.buyogobackend.controller;
 import com.factory.buyogobackend.dto.EventRequestDTO;
 import com.factory.buyogobackend.dto.BatchResponse;
 import com.factory.buyogobackend.dto.QueryStatsResponse;
+import com.factory.buyogobackend.dto.TopDefectLineResponse;
 import com.factory.buyogobackend.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,14 @@ public class EventController {
     {
         QueryStatsResponse stats = eventService.getStats(machineId, start, end);
         return ResponseEntity.ok(stats) ;
+    }
+
+    @GetMapping("/stats/top-defect-lines")
+    public ResponseEntity<List<TopDefectLineResponse>> topDefectLines(
+            @RequestParam String factoryId, @RequestParam LocalDateTime from, @RequestParam LocalDateTime to,
+            @RequestParam(defaultValue = "10") int limit
+    ){
+        List<TopDefectLineResponse> response = eventService.getTopDefectLines(factoryId, from, to, limit) ;
+        return ResponseEntity.ok(response) ;
     }
 }
