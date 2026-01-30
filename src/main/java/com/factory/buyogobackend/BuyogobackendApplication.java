@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BuyogobackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BuyogobackendApplication.class, args);
+
+        SpringApplication.run(BuyogobackendApplication.class, args);
 	}
 
 }

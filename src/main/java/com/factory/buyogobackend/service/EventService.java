@@ -2,12 +2,16 @@ package com.factory.buyogobackend.service;
 
 import com.factory.buyogobackend.dto.EventRequestDTO;
 import com.factory.buyogobackend.dto.BatchResponse;
+import com.factory.buyogobackend.dto.QueryStatsResponse;
 import com.factory.buyogobackend.dto.Rejection;
 import com.factory.buyogobackend.model.Event;
 import com.factory.buyogobackend.repository.EventRepository;
+import com.factory.buyogobackend.repository.projection.StatsProjection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,5 +133,28 @@ public class EventService {
         }
 
         return true ;
+    }
+
+    public QueryStatsResponse getStats(String machineId, LocalDateTime start, LocalDateTime end) {
+        try {
+            StatsProjection stats = eventRepository.fetchStats(machineId, start, end);
+            long eventsCount = stats.getEventsCount();
+            long defectsCount = stats.getDefectsCount();
+
+            double windowSeconds = Duration.between(start, end).getSeconds();
+            double windowHours = windowSeconds / 3600.0 ;
+
+            double avgDefectRate = (windowHours > 0) ? defectsCount / windowHours : 0.0 ;
+
+            String status = (avgDefectRate < 2.0 ) ? "Healthy" : "Warning" ;
+
+            return new QueryStatsResponse(
+                    machineId, start, end, eventsCount, defectsCount, avgDefectRate, status
+            ) ;
+
+        } catch (Exception e){
+            log.error("error in querying stats", e);
+            return null ;
+        }
     }
 }
